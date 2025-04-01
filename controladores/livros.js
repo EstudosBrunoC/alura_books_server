@@ -1,6 +1,9 @@
+const fs = require('fs');
+
 function getLivros (req, res) {
     try {
-        res.send('Hello World from Alura');
+        const livros = getTodosLivros();
+        res.send(livros);
     }  catch (error) {
         res.status(500)
         res.send(error.message)
