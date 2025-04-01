@@ -12,7 +12,37 @@ function getLivroPorId(id) {
     return livroFiltrado;
 }
 
+function insereLivro(livroNovo) {
+    const livros = JSON.parse(fs.readFileSync('livros.json'));
+
+    const novaListaDeLivros = [...livros, livroNovo];
+
+    fs.writeFileSync('livros.json', JSON.stringify(novaListaDeLivros));
+};
+
+function modificaLivro(modificacoes, id) {
+    let livrosAtuais = JSON.parse(fs.readFileSync('livros.json'));
+    const indiceModificado = livrosAtuais.findIndex(livro => livro.id == id);
+    
+    const conteudoModificado = { ...livrosAtuais[indiceModificado], ...modificacoes};
+    // livrosAtuais[indiceModificado] => { id: 1, nome: 'O Senhor dos Anéis' }
+    // modificacoes => { nome: 'O Senhor dos Anéis - Edição Especial' }
+
+    livrosAtuais[indiceModificado] = conteudoModificado;
+    // livrosAtuais[indiceModificado] => { id: 1, nome: 'O Senhor dos Anéis - Edição Especial' }
+    fs.writeFileSync('livros.json', JSON.stringify(livrosAtuais));
+};
+
+function deletaLivroPorId(id) {
+    const livros = JSON.parse(fs.readFileSync('livros.json'));
+    
+    const livrosFiltrados = livros.filter(livro => livro.id !== id);
+    fs.writeFileSync('livros.json', JSON.stringify(livrosFiltrados));
+};
 module.exports = {
     getTodosLivros,
-    getLivroPorId
+    getLivroPorId,
+    insereLivro,
+    modificaLivro,
+    deletaLivroPorId
 }

@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { getTodosLivros, getLivroPorId } = require('../servicos/livro.js');
+const { getTodosLivros, getLivroPorId, insereLivro, modificaLivro, deletaLivroPorId} = require('../servicos/livro.js');
 
 function getLivros (req, res) {
     try {
@@ -14,15 +14,78 @@ function getLivros (req, res) {
 function getLivro (req, res) {
     try {
         const id = req.params.id;
-        const livro = getLivroPorId(id);
-        res.send(livro);
+        if (id && Number(id)) {
+            const livro = getLivroPorId(id);
+            res.send(livro);
+        } else {
+            res.status(422);
+            res.send("id deve ser um número!");
+        }
+        
     }  catch (error) {
         res.status(500)
         res.send(error.message)
     }
 }
 
+function postLivro (req, res) {
+    try {
+        const livroNovo = req.body;
+        if(req.body.nome) {
+            insereLivro(livroNovo);
+            res.status(201);
+            res.send("livro novo inserido com sucesso!");
+        } else {
+            res.status(422);
+            res.send("o campo nome é obrigatório!");
+        }
+    }   catch (error) {
+        res.status(500)
+        res.send(error.message)
+    }
+};
+
+function patchLivro(req, res) {
+    try {
+        const id = req.params.id;
+        if (id && Number(id)) {
+            const body = req.body;
+
+            modificaLivro(body, id);
+            res.send("livro modificado com sucesso!");
+            res.status(200);
+        } else {
+            res.status(422);
+            res.send("id deve ser um número!");
+        }
+    } catch (error) {
+        res.status(500)
+        res.send(error.message)
+    }
+};
+
+function deleteLivro(req, res) {
+    try {
+        const id = req.params.id;
+        if (id && Number(id)) {
+            deletaLivroPorId(id);
+            res.status(200);
+            res.send("livro deletado com sucesso!");
+        } else {
+            res.status(422);
+            res.send("id deve ser um número!");
+        }
+    } catch (error) {
+
+        res.status(500)
+        res.send(error.message)
+    }
+};
+
 module.exports = {
     getLivros,
-    getLivro
+    getLivro,
+    postLivro,
+    patchLivro,
+    deleteLivro
 }
