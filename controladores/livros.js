@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { getTodosLivros } = require('../servicos/livro.js');
 
 function getLivros (req, res) {
     try {
