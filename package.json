@@ -17,7 +17,9 @@
   "homepage": "https://github.com/EstudosBrunoC/alura_books_server#readme",
   "description": "",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^5.1.0",
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "react-router-dom": "^7.4.1"
   }
 }
